@@ -1,0 +1,24 @@
+#elegimos la image de base
+FROM python:3.7
+
+#ejecutamos la instalación de los paquetes
+RUN pip install notebook && pip install numpy && pip install numba
+
+#copiamos los archivos necesarios
+#COPY ./lab6/kmer-solution.ipynb home/.
+COPY kmer-solution.ipynb home/kmer-solution.ipynb
+#COPY ./lab6/pi-solution.ipynb home/.
+COPY pi-solution.ipynb home/pi-solution.ipynb
+
+#añadimos un script que contiene la ejecución de ambos notebooks
+COPY notebooks.sh home/notebooks.sh
+
+#establecemos el directorio de trabajo en la imagen
+WORKDIR /home
+
+RUN chmod +x notebooks.sh
+
+
+#comandos para ejecutar por defecto
+#CMD ipython kmer-solution.ipynb ; ipython pi-solution.ipynb
+CMD ["./notebooks.sh"]
